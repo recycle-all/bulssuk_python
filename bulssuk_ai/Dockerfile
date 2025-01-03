@@ -7,6 +7,7 @@ WORKDIR /app
 # .DS_Store 삭제 명령어 추가 (호스트에서 빌드 시 삭제)
 RUN find . -name ".DS_Store" -delete || true
 
+RUN apt-get update && apt-get install -y python3-pip && pip3 install --upgrade pip
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
