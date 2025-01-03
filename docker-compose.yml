@@ -6,7 +6,7 @@ services:
       context: ./bulssuk_ai  # bulssuk_ai 디렉토리를 참조
       dockerfile: Dockerfile  # bulssuk_ai의 Dockerfile 사용
     ports:
-      - "8765:8765"  # 호스트 포트 8765 -> 컨테이너 포트 8765
+      - "5001:8765"  # 호스트 포트 8765 -> 컨테이너 포트 8765
     volumes:
       - ./bulssuk_ai:/app  # 필요 시 호스트와 컨테이너 디렉토리 연결
     container_name: bulssuk_ai_container
