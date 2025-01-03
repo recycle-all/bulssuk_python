@@ -19,7 +19,7 @@ COPY main/requirements.txt /app/
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # 컨테이너에서 사용할 포트를 명시적으로 선언
-EXPOSE 5002  # 필요한 포트 번호로 수정
+EXPOSE 5002
 
 # 실행할 Python 스크립트 지정
 CMD ["python", "/app/main/wordCloud_tree.py"]
