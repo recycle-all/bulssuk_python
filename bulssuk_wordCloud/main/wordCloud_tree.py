@@ -32,6 +32,8 @@ load_dotenv()
 # 환경 변수에서 API 인증 정보 가져오기
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+print(f"CLIENT_ID: {os.getenv('CLIENT_ID')}")
+print(f"CLIENT_SECRET: {os.getenv('CLIENT_SECRET')}")
 
 # 프로젝트 디렉토리 및 리소스 경로 설정
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
