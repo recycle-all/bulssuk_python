@@ -7,6 +7,8 @@ WORKDIR /app
 # .DS_Store 파일 무시를 위한 명령어 추가 (빌드 중 삭제)
 RUN find . -name ".DS_Store" -delete || true
 
+RUN apt-get update && apt-get install -y python3-pip && pip3 install --upgrade pip
+
 # 필요한 파일 복사
 COPY requirements.txt ./
 COPY app.py ./
