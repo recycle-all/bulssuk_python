@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     
 # 컨테이너 내부 작업 디렉토리 설정
 WORKDIR /app
-
+RUN apt-get update && apt-get install -y python3-pip && pip3 install --upgrade pip
 # .DS_Store 삭제 명령어 추가 (호스트에서 빌드 시 삭제)
 RUN find . -name ".DS_Store" -delete || true
 
