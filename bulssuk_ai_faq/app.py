@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from fastapi import FastAPI, Request
 from transformers import AutoTokenizer, AutoModel
@@ -8,10 +9,23 @@ import uvicorn
 
 app = FastAPI()
 
-tokenizer = AutoTokenizer.from_pretrained("./KR-SBERT-V40K-klueNLI-augSTS")
-model = AutoModel.from_pretrained("./KR-SBERT-V40K-klueNLI-augSTS")
+# 모델 경로와 이름
+model_name = "snunlp/KR-SBERT-V40K-klueNLI-augSTS"
+save_path = "./KR-SBERT-V40K-klueNLI-augSTS"
 
+# 모델 다운로드 및 저장
+if not os.path.exists(save_path):
+    os.makedirs(save_path, exist_ok=True)
+    print("Downloading and saving Hugging Face model...")
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    tokenizer.save_pretrained(save_path)
+    model = AutoModel.from_pretrained(model_name)
+    model.save_pretrained(save_path)
+    print("Model downloaded and saved successfully!")
 
+# 로드된 모델 및 토크나이저
+tokenizer = AutoTokenizer.from_pretrained(save_path)
+model = AutoModel.from_pretrained(save_path)
 
 # JSON 변환 함수
 def convert_to_python(data):
@@ -31,37 +45,6 @@ def encode_texts(texts):
         model_output = model(**inputs)
     embeddings = model_output.last_hidden_state.mean(dim=1)
     return embeddings
-
-# def load_model():
-#     """
-#     모델과 토크나이저를 로드합니다.
-#     """
-#     try:
-#         print("Loading model...")
-#         tokenizer = AutoTokenizer.from_pretrained("./KR-SBERT-V40K-klueNLI-augSTS")
-#         model = AutoModel.from_pretrained("./KR-SBERT-V40K-klueNLI-augSTS")
-#         print("Model loaded successfully")
-#         return tokenizer, model
-#     except Exception as e:
-#         print(f"Error loading model: {e}")
-#         print("Please ensure the model name is correct or available in the Hugging Face repository.")
-#         return None, None
-
-# # 모델 및 토크나이저 로드
-# tokenizer, model = load_model()
-
-# def encode_texts(texts):
-#     """
-#     텍스트 데이터를 SBERT 임베딩으로 변환합니다.
-#     """
-#     if not tokenizer or not model:
-#         raise ValueError("Model or tokenizer not loaded")
-    
-#     inputs = tokenizer(texts, padding=True, truncation=True, return_tensors="pt")
-#     with torch.no_grad():
-#         model_output = model(**inputs)
-#     embeddings = model_output.last_hidden_state.mean(dim=1)
-#     return embeddings
 
 @app.post("/similarity")
 async def similarity(request: Request):
@@ -92,7 +75,6 @@ async def similarity(request: Request):
             clusters[label] = []
         clusters[label].append({"text": texts[idx], "answer": answers[idx]})
 
-    # return {"clusters": clusters}
     # 6. JSON 변환
     response = {
         convert_to_python(key): [convert_to_python(item) for item in value]
@@ -100,7 +82,6 @@ async def similarity(request: Request):
     }
     return response
 
-# 중복 확인
 @app.post("/check_similarity")
 async def check_similarity(request: Request):
     data = await request.json()
@@ -126,7 +107,6 @@ async def check_similarity(request: Request):
         "similarity_scores": similarity_scores.tolist(),
         "threshold": threshold,
     }
-
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5005)
