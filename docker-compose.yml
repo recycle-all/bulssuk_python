@@ -6,7 +6,7 @@ services:
       context: ./bulssuk_ai
       dockerfile: Dockerfile
     ports:
-      - "5001:8765"
+      - "8765:8765"
     container_name: bulssuk_ai_container
 
   bulssuk_ai_faq:
