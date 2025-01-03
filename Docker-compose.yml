@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  bulssuk_ai:
+    build:
+      context: ./bulssuk_ai  # bulssuk_ai 디렉토리를 참조
+      dockerfile: Dockerfile  # bulssuk_ai의 Dockerfile 사용
+    ports:
+      - "8765:8765"  # 호스트 포트 8765 -> 컨테이너 포트 8765
+    volumes:
+      - ./bulssuk_ai:/app  # 필요 시 호스트와 컨테이너 디렉토리 연결
+    container_name: bulssuk_ai_container
+
+  bulssuk_ai_faq:
+    build:
+      context: ./bulssuk_ai_faq  # bulssuk_ai_faq 디렉토리를 참조
+      dockerfile: Dockerfile  # bulssuk_ai_faq의 Dockerfile 사용
+    ports:
+      - "5005:5005"  # 호스트 포트 5005 -> 컨테이너 포트 5005
+    volumes:
+      - ./bulssuk_ai_faq:/app  # 필요 시 호스트와 컨테이너 디렉토리 연결
+    container_name: bulssuk_ai_faq_container
+
+  bulssuk_wordcloud:
+    build:
+      context: ./bulssuk_wordCloud  # bulssuk_wordCloud 디렉토리를 참조
+      dockerfile: Dockerfile  # bulssuk_wordCloud의 Dockerfile 사용
+    ports:
+      - "5002:5002"  # 호스트 포트 5002 -> 컨테이너 포트 5002
+    volumes:
+      - ./bulssuk_wordCloud:/app  # 필요 시 호스트와 컨테이너 디렉토리 연결
+    container_name: bulssuk_wordcloud_container
