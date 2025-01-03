@@ -12,6 +12,9 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# 라이브러리 경로 갱신
+RUN ldconfig
+
 # .DS_Store 삭제 명령어 추가 (호스트에서 빌드 시 삭제)
 RUN find . -name ".DS_Store" -delete || true
 
