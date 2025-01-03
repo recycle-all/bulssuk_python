@@ -45,7 +45,11 @@ def encode_texts(texts):
         model_output = model(**inputs)
     embeddings = model_output.last_hidden_state.mean(dim=1)
     return embeddings
-
+    
+@app.get("/")
+async def root():
+    return {"message": "Hello, World!"}
+    
 @app.post("/similarity")
 async def similarity(request: Request):
     data = await request.json()
